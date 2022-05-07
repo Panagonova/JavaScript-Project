@@ -1,0 +1,42 @@
+:root {
+    --main-menu-width : 70px;
+    --second-menu-expand-width : 200px;
+    --second-menu-collapsed-width : 40px;
+}
+
+.mainMenu {
+    z-index: 1000;
+}
+.secondMenu {
+    position: fixed !important;
+    top: 0;
+    bottom: 0;
+    left: var(--main-menu-width);
+    overflow: hidden;
+    z-index: 1000;
+}
+
+.siteContent {
+    margin-left: calc(var(--main-menu-width) + var(--second-menu-expand-width) + 20px);
+    margin-top: 90px;
+    margin-right: 20px;
+    transition: all 0.5s;
+
+}
+
+.siteContent.collapsed {
+        margin-left: calc(var(--main-menu-width) + var(--second-menu-collapsed-width) + 20px);
+    }
+
+header.ant-layout-header {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 100;
+    background-color: white;
+}
+
+main {
+    margin-top: 64px;
+}
