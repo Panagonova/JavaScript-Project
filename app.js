@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const {verify} = require("./token_utils")
-const {fileUpload} = require("./server/upload")
+const {imageUpload} = require("./server/upload")
 const {login} = require("./server/login")
 const {register} = require("./server/register")
 const productApi = require("./server/product")
@@ -11,7 +11,7 @@ const port = 3030;
 const host = "localhost";
 
 const router = (app) => {
-    fileUpload(app)
+    imageUpload(app)
 
     app.post("/api/login", async(req, res) => {
         const result = await login(req.body)

@@ -3,8 +3,8 @@ const path = require("path");
 let multer = require('multer');
 let {nanoid} = require('nanoid');
 
-const fileUpload = (app) =>{
-    let upload_dir = path.normalize(`${__dirname}/_uploads/`);
+const imageUpload = (app) =>{
+    let upload_dir = path.normalize(`${__dirname}/../src/images/`);
     if (!fs.existsSync(upload_dir))
         fs.mkdirSync(upload_dir, {recursive: true});
 
@@ -18,13 +18,11 @@ const fileUpload = (app) =>{
         }
     });
 
-    app.post("/api/upload", multer({storage: storage}).single('file'), async(req, res) => {
-        fs.copyFileSync(req.file.path, `${__dirname}/../src/images/${req.file.filename}`)
-        fs.unlinkSync(req.file.path);
+    app.post("/api/upload/image", multer({storage: storage}).single('file'), async(req, res) => {
         res.send(req.file);
     })
 };
 
 module.exports = {
-    fileUpload
+    imageUpload
 }

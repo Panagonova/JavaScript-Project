@@ -1,9 +1,9 @@
 import "./Login.css"
 import React, {useCallback, useState}          from "react"
 import { Card, Form , Checkbox, Input, Button, Alert} from 'antd';
-import form_validators from "../tools/form_validators.js"
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
+import form_validators from "../tools/form_validators.js"
 
 const Login = () => {
     const [error, setError] = useState("");

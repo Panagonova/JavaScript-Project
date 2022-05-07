@@ -1,0 +1,22 @@
+.ant-upload-list.ant-upload-list-picture-card {
+    display: flex;
+}
+
+.ant-upload-list-picture-card-container {
+    width: 50px;
+    height: 50px;
+    flex: 0 0 auto;
+}
+
+.ant-upload-list-picture-card .ant-upload-list-item {
+    padding: 2px;
+}
+
+.ant-upload.ant-upload-select.ant-upload-select-picture-card {
+    flex: 1 1 auto;
+    height: 32px;
+}
+
+.ant-upload.ant-upload-select.ant-upload-select-text {
+    width: 100%
+}

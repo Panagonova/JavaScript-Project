@@ -1,9 +1,10 @@
-import "./Login.css"
+import "./Create.css"
 import React, {useCallback, useState}          from "react"
 import { Card, Form , Result, Input, Button, Alert, InputNumber, Switch, Select, Upload} from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
+import form_validators from "../tools/form_validators.js"
 
 const Create = () => {
     const [error, setError] = useState("");
@@ -41,7 +42,7 @@ const Create = () => {
             subTitle="Sorry, you are not authorized to access this page."
             extra={<Button type="primary">Back Home</Button>}
         />}
-        {cookies.token && <Card title="Create new product" style={{margin: "100px auto", width: 400}}>
+        {cookies.token && <Card title="Create new product" style={{margin: "100px auto", width: 800}}>
             <Form
                 name="basic"
 
@@ -56,6 +57,7 @@ const Create = () => {
                     label="Name"
                     name="name"
                     rules={[{ required: true}]}
+                    style={{display: "inline-block", width : "calc(66.66% - 8px)", marginRight: 8}}
                 >
                     <Input />
                 </Form.Item>
@@ -71,15 +73,17 @@ const Create = () => {
                             return data.fileList
                         return data
                     }}
+                    style={{display: "inline-block", width : "calc(33.33%)"}}
                 >
-                    <Upload name="file" action="/api/upload" listType="picture">
-                        <Button icon={<UploadOutlined />}>Click to upload</Button>
+                    <Upload name="file" action="/api/upload/image" listType="picture-card">
+                        <Button type="text" block icon={<UploadOutlined />}>Click to upload</Button>
                     </Upload>
                 </Form.Item>
                 <Form.Item
                     label="Category"
                     name="category"
                     rules={[{ required: true}]}
+                    style={{display: "inline-block", width : "calc(33.33% - 8px)", marginRight: 8}}
                 >
                     <Select >
                         <Select.Option value={"dress"}>Dress</Select.Option>
@@ -93,6 +97,7 @@ const Create = () => {
                     label="Color"
                     name="color"
                     rules={[{ required: true}]}
+                    style={{display: "inline-block", width : "calc(33.33% - 8px)", marginRight: 8}}
                 >
                     <Select >
                         <Select.Option value={"red"}>Red</Select.Option>
@@ -111,24 +116,32 @@ const Create = () => {
                     label="Style"
                     name="style"
                     rules={[{ required: true}]}
+                    style={{display: "inline-block", width : "calc(33.33%)"}}
                 >
                     <Select >
                         <Select.Option value={"dress"}>A</Select.Option>
                     </Select>
                 </Form.Item>
                 <Form.Item
+                    label="Size"
+                    name="size"
+                    style={{display: "inline-block", width : "calc(33.33% - 8px)", marginRight: 8}}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
                     label="Price"
                     name="price"
-                    rules={[{ required: true}]}
-                    style={{display: "inline-block", width : "calc(50% - 8px)", marginRight: 8}}
+                    rules={[{ required: true, validator: form_validators.float_validation}]}
+                    style={{display: "inline-block", width : "calc(33.33% - 8px)", marginRight: 8}}
                 >
                     <InputNumber />
                 </Form.Item>
                 <Form.Item
                     label="Count"
                     name="count"
-                    rules={[{ required: true}]}
-                    style={{display: "inline-block", width : "calc(50%)"}}
+                    rules={[{ required: true, validator: form_validators.number_validation}]}
+                    style={{display: "inline-block", width : "calc(33.33%)"}}
                 >
                     <InputNumber />
                 </Form.Item>
