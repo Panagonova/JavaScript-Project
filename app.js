@@ -1,8 +1,10 @@
 const express = require("express");
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const {verify} = require("../token_utils")
 const {login} = require("./server/login")
 const {register} = require("./server/register")
+const productApi = require("./server/product")
 
 const port = 3030;
 const host = "localhost";
@@ -26,6 +28,28 @@ const router = (app) => {
             res.cookie("token", result.token, { path: '/' })
         return res.send(result)
 
+    })
+
+    app.get("/api/product", async(req, res) => {
+        return await productApi.read(res.query)
+    })
+    app.post("/api/product", async(req, res) => {
+        if (!await verify(req.cookies.token))
+            return {error: "Access denied"}
+
+        return await productApi.create(res.body)
+    })
+    app.put("/api/product", async(req, res) => {
+        if (!await verify(req.cookies.token))
+            return {error: "Access denied"}
+
+        return await productApi.update(res.body)
+    })
+    app.delete("/api/product", async(req, res) => {
+        if (!await verify(req.cookies.token))
+            return {error: "Access denied"}
+
+        return await productApi.remove(res.body)
     })
 }
 

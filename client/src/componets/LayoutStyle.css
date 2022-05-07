@@ -40,3 +40,10 @@ header.ant-layout-header {
 main {
     margin-top: 64px;
 }
+
+.logo {
+    float: left;
+    display: inline-block;
+    width: 50px;
+    margin-top: 10px;
+}

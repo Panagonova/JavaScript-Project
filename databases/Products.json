@@ -1,0 +1,17 @@
+[
+    {
+        "_id"      : "",
+        "name"     : "",
+        "images"   : "",
+        "category" : "",
+        "price"    : 0,
+        "color"    : "",
+        "style"    : "",
+        "size"     : "",
+        "material" : "",
+        "count"    : 0,
+        "hot"      : true,
+        "promotion": false,
+        "trending" : true
+    }
+]

@@ -1,7 +1,7 @@
 import "./LayoutStyle.css"
 import React, {useCallback, useMemo, useState} from "react";
-import {Layout, Menu}                          from "antd";
-import {useNavigate}                  from "react-router-dom";
+import {Layout, Menu}                   from "antd";
+import {useNavigate, Link}                  from "react-router-dom";
 import {useCookies}                   from "react-cookie";
 
 const { Header, Footer, Sider, Content } = Layout;
@@ -55,7 +55,9 @@ const DefaultLayout = (props) => {
 
     return <Layout style={{minHeight: "100vh"}}>
         <Header>
-            <div className="logo" />
+            <Link to={"/"}>
+                <img alt="logo" className="logo" src="/logo.svg" />
+            </Link>
             <Menu
                 mode="horizontal"
                 onSelect={onMenuSelect}
