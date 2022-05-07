@@ -1,15 +1,16 @@
 const {nanoid} = require ("nanoid")
 const {Product} =  require("../db");
 
-const read = async () => {
-
+const read = async (query) => {
+    let result = Product.find((user) => Object.keys(query).every(key => query[key] === user[key]));
+    return {data: result || []}
 }
 
 const create = async (productData) => {
-    const _id = nanoid();
-    const finalData = Object.assign({_id, productData})
-    Product.create(finalData).save();
 
+    const _id = nanoid();
+    const finalData = Object.assign({_id}, productData)
+    Product.create(finalData).save();
     return {success: true,data: finalData};
 }
 

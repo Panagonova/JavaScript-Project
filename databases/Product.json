@@ -1,6 +1,6 @@
 [
     {
-        "_id"      : "",
+        "_id"      : "1",
         "name"     : "",
         "images"   : "",
         "category" : "",
@@ -12,6 +12,6 @@
         "count"    : 0,
         "hot"      : true,
         "promotion": false,
-        "trending" : true
+        "trending" : "true"
     }
 ]

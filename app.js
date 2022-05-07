@@ -1,7 +1,8 @@
 const express = require("express");
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const {verify} = require("../token_utils")
+const {verify} = require("./token_utils")
+const {fileUpload} = require("./server/upload")
 const {login} = require("./server/login")
 const {register} = require("./server/register")
 const productApi = require("./server/product")
@@ -10,6 +11,8 @@ const port = 3030;
 const host = "localhost";
 
 const router = (app) => {
+    fileUpload(app)
+
     app.post("/api/login", async(req, res) => {
         const result = await login(req.body)
         if (!result.error)
@@ -31,25 +34,40 @@ const router = (app) => {
     })
 
     app.get("/api/product", async(req, res) => {
-        return await productApi.read(res.query)
+        let result =  await productApi.read(req.query)
+        res.send(result)
     })
     app.post("/api/product", async(req, res) => {
-        if (!await verify(req.cookies.token))
+        try {
+            await verify(req.cookies.token)
+        }
+        catch(e) {
+            debugger
             return {error: "Access denied"}
+        }
 
-        return await productApi.create(res.body)
+        const result = await productApi.create(req.body)
+        return res.send(result)
     })
     app.put("/api/product", async(req, res) => {
-        if (!await verify(req.cookies.token))
+        try {
+            await verify(req.cookies.token)
+        }
+        catch(e) {
             return {error: "Access denied"}
+        }
 
-        return await productApi.update(res.body)
+        return await productApi.update(req.body)
     })
     app.delete("/api/product", async(req, res) => {
-        if (!await verify(req.cookies.token))
+        try {
+            await verify(req.cookies.token)
+        }
+        catch(e) {
             return {error: "Access denied"}
+        }
 
-        return await productApi.remove(res.body)
+        return await productApi.remove(req.body)
     })
 }
 

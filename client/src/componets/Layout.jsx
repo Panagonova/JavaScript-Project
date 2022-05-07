@@ -47,6 +47,7 @@ const DefaultLayout = (props) => {
         }
         else {
             items.push(
+                {key: "create", "label": "Create new product"},
                 {key: "logout", "label": "Logout"}
             )
         }
