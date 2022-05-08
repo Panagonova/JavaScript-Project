@@ -7,9 +7,8 @@ const read = async (query) => {
 }
 
 const create = async (productData) => {
-
     const _id = nanoid();
-    const finalData = Object.assign({_id}, productData)
+    const finalData = Object.assign({_id, date: new Date().toISOString()}, productData)
     Product.create(finalData).save();
     return {success: true,data: finalData};
 }
@@ -23,7 +22,7 @@ const update = async (productData) => {
 }
 
 const remove = async (data) => {
-    Product.remove({_id: data._id});
+    Product.remove({_id: data.id});
     return {success: true};
 }
 

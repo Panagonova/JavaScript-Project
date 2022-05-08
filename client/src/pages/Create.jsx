@@ -1,25 +1,52 @@
 import "./Create.css"
-import React, {useCallback, useState}          from "react"
-import { Card, Form , Result, Input, Button, Alert, InputNumber, Switch, Select, Upload} from 'antd';
+import React, {useCallback, useEffect, useState}    from "react"
+import { Card, Form , Result, Input, Button, Alert} from 'antd';
+import { InputNumber, Switch, Select, Upload, Rate} from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { useCookies } from 'react-cookie';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams, } from 'react-router-dom';
 import form_validators from "../tools/form_validators.js"
 
 const Create = () => {
     const [error, setError] = useState("");
     const [cookies] = useCookies();
     const navigate = useNavigate();
+    const [form] = Form.useForm();
+    const {id} = useParams();
+
+    useEffect(() => {
+        if (id) {
+            (async () => {
+                const dbData = await fetch(`/api/product?_id=${id}`, {
+                    method: "get",
+                    headers: {
+                        'authentication': cookies.token,
+                        'Content-Type': 'application/json',
+                    }
+                })
+                const result = await dbData.json();
+                const product = result.data?.[0]
+                if (product) {
+                    product.image = [{
+                        uid: '1',
+                        status: 'done',
+                        url: `http://localhost:3030/images/${product.image}`,
+                        name: product.image
+                    }]
+                    form.setFieldsValue(product)
+                }
+            })()
+        }
+    }, [id,form])
 
     const onFinish = useCallback(async values => {
         setError("")
-        values.images = [values.images[0].response.filename]
+        values.image = values.image[0]?.response?.filename ||  values.image[0].url?.split("/").pop();
         values.hot = !!values.hot
         values.trending = !!values.trending
         values.promotion = !!values.promotion
-
         const response = await fetch("/api/product", {
-            method: "post",
+            method: id ? "put" : "post",
             headers: {
                 'authentication': cookies.token,
                  'Content-Type': 'application/json',
@@ -33,7 +60,7 @@ const Create = () => {
         else {
             navigate("/");
         }
-    }, [navigate, cookies]);
+    }, [navigate, cookies, id]);
 
     return <>
         {!cookies.token && <Result
@@ -42,10 +69,10 @@ const Create = () => {
             subTitle="Sorry, you are not authorized to access this page."
             extra={<Button type="primary">Back Home</Button>}
         />}
-        {cookies.token && <Card title="Create new product" style={{margin: "100px auto", width: 800}}>
+        {cookies.token && <Card title={id ? "UpdateProduct" : "Create new product"} style={{margin: "100px auto", width: 800}}>
             <Form
-                name="basic"
-
+                name="product"
+                form={form}
                 labelCol={{ span: 8 }}
                 wrapperCol={{ span: 16 }}
                 initialValues={{ remember: true }}
@@ -53,6 +80,12 @@ const Create = () => {
                 autoComplete="off"
                 layout="vertical"
             >
+                <Form.Item
+                    name="_id"
+                    style={{display: "none"}}
+                >
+                    <Input type="hidden" />
+                </Form.Item>
                 <Form.Item
                     label="Name"
                     name="name"
@@ -63,7 +96,7 @@ const Create = () => {
                 </Form.Item>
                 <Form.Item
                     label="Image"
-                    name="images"
+                    name="image"
                     rules={[{ required: true}]}
                     valuePropName="fileList"
                     getValueFromEvent={(data) => {
@@ -83,7 +116,7 @@ const Create = () => {
                     label="Category"
                     name="category"
                     rules={[{ required: true}]}
-                    style={{display: "inline-block", width : "calc(33.33% - 8px)", marginRight: 8}}
+                    style={{display: "inline-block", width : "calc(25% - 8px)", marginRight: 8}}
                 >
                     <Select >
                         <Select.Option value={"dress"}>Dress</Select.Option>
@@ -97,7 +130,7 @@ const Create = () => {
                     label="Color"
                     name="color"
                     rules={[{ required: true}]}
-                    style={{display: "inline-block", width : "calc(33.33% - 8px)", marginRight: 8}}
+                    style={{display: "inline-block", width : "calc(25% - 8px)", marginRight: 8}}
                 >
                     <Select >
                         <Select.Option value={"red"}>Red</Select.Option>
@@ -116,16 +149,42 @@ const Create = () => {
                     label="Style"
                     name="style"
                     rules={[{ required: true}]}
-                    style={{display: "inline-block", width : "calc(33.33%)"}}
+                    style={{display: "inline-block", width : "calc(25% - 8px)", marginRight: 8}}
                 >
                     <Select >
                         <Select.Option value={"dress"}>A</Select.Option>
                     </Select>
                 </Form.Item>
                 <Form.Item
+                    label="Gender"
+                    name="gender"
+                    rules={[{ required: true}]}
+                    style={{display: "inline-block", width : "calc(25% - 8px)", marginRight: 8}}
+                >
+                    <Select >
+                        <Select.Option value={"Men"}>Men</Select.Option>
+                        <Select.Option value={"Women"}>Women</Select.Option>
+                        <Select.Option value={"Unisex"}>Unisex</Select.Option>
+                    </Select>
+                </Form.Item>
+                <Form.Item
+                    label="Material"
+                    name="material"
+                    rules={[{ required: true}]}
+                    style={{display: "inline-block", width : "calc(25% - 8px)", marginRight: 8}}
+                >
+                    <Select >
+                        <Select.Option value={"Cotton"}>Cotton</Select.Option>
+                        <Select.Option value={"Wool"}>Wool</Select.Option>
+                        <Select.Option value={"Silk"}>Silk</Select.Option>
+                        <Select.Option value={"Leather"}>Leather</Select.Option>
+                        <Select.Option value={"Velvet"}>Velvet</Select.Option>
+                    </Select>
+                </Form.Item>
+                <Form.Item
                     label="Size"
                     name="size"
-                    style={{display: "inline-block", width : "calc(33.33% - 8px)", marginRight: 8}}
+                    style={{display: "inline-block", width : "calc(25% - 8px)", marginRight: 8}}
                 >
                     <Input />
                 </Form.Item>
@@ -133,7 +192,7 @@ const Create = () => {
                     label="Price"
                     name="price"
                     rules={[{ required: true, validator: form_validators.float_validation}]}
-                    style={{display: "inline-block", width : "calc(33.33% - 8px)", marginRight: 8}}
+                    style={{display: "inline-block", width : "calc(25% - 8px)", marginRight: 8}}
                 >
                     <InputNumber />
                 </Form.Item>
@@ -141,9 +200,15 @@ const Create = () => {
                     label="Count"
                     name="count"
                     rules={[{ required: true, validator: form_validators.number_validation}]}
-                    style={{display: "inline-block", width : "calc(33.33%)"}}
+                    style={{display: "inline-block", width : "calc(25%)"}}
                 >
                     <InputNumber />
+                </Form.Item>
+                <Form.Item
+                    label="Rating"
+                    name="rating"
+                >
+                    <Rate />
                 </Form.Item>
                 <Form.Item
                     label="Trending"

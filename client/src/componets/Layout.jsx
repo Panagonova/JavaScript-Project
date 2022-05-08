@@ -35,10 +35,7 @@ const DefaultLayout = (props) => {
     }, [navigate])
 
     const menuItems = useMemo(() => {
-        const items = [
-            {key: "home", "label": "Home"},
-            {key: "shop", "label": "Shop"}
-        ]
+        const items = []
         if (!cookies.token) {
             items.push(
                 {key: "login", "label": "Login"},

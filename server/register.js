@@ -12,7 +12,6 @@ const register = async(credentials) => {
 
     const _id = nanoid();
     const hashedPassword = token_utils.hashPassword(password, "");
-    debugger
     const user = User.create({_id, name, email, password: hashedPassword})
     user.save();
 

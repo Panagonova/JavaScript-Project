@@ -12,17 +12,20 @@ const User = Schema("User", {
 const Product = Schema("Product", {
     _id: { type: String, required: true },
     name: { type: String },
-    images: { type: Array },
+    gender: { type: String },
+    image: { type: String },
     category: { type: String },
-    price: { type: String },
+    price: { type: Number },
     color: { type: String },
     style: { type: String },
     size: { type: String },
     material: { type: String },
-    count: { type: String },
+    count: { type: Number },
+    rating: { type: Number },
     hot: { type: Boolean },
     promotion: { type: Boolean },
     trending: { type: Boolean },
+    date: { type: String },
 });
 
 module.exports = {

@@ -34,40 +34,42 @@ const router = (app) => {
     })
 
     app.get("/api/product", async(req, res) => {
-        let result =  await productApi.read(req.query)
-        res.send(result)
+        let result = await productApi.read(req.query)
+        res.send(result);
     })
     app.post("/api/product", async(req, res) => {
         try {
             await verify(req.cookies.token)
         }
         catch(e) {
-            debugger
-            return {error: "Access denied"}
+            return res.send({error: "Access denied"})
         }
 
-        const result = await productApi.create(req.body)
-        return res.send(result)
+        const result = await productApi.create(req.body);
+        return res.send(result);
     })
     app.put("/api/product", async(req, res) => {
         try {
             await verify(req.cookies.token)
         }
         catch(e) {
-            return {error: "Access denied"}
+            return res.send({error: "Access denied"})
         }
 
-        return await productApi.update(req.body)
+        const result = await productApi.update(req.body);
+        res.send(result);
+
     })
     app.delete("/api/product", async(req, res) => {
         try {
             await verify(req.cookies.token)
         }
         catch(e) {
-            return {error: "Access denied"}
+            return res.send({error: "Access denied"})
         }
 
-        return await productApi.remove(req.body)
+        const result = await productApi.remove(req.query);
+        res.send(result);
     })
 }
 
