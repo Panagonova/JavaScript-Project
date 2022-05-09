@@ -82,7 +82,6 @@ const Home = () => {
                             </Popconfirm>
                         ]}
                     >
-                    >
                         <Card.Meta title={item.name}/>
                         <Rate disabled defaultValue={item.rating} />
                         <Statistic value={item.price} precision={2} suffix={"лв."} prefix={genderSign(item.gender) }/>
