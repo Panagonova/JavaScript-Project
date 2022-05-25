@@ -6,9 +6,10 @@ import { UploadOutlined } from '@ant-design/icons';
 import { useCookies } from 'react-cookie';
 import { useNavigate, useParams, } from 'react-router-dom';
 import form_validators from "../tools/form_validators.js"
-
+import fashionStyles from "../resources/fashionStyle.json";
 const Create = () => {
     const [error, setError] = useState("");
+    const [category, setCategory] = useState(null);
     const [cookies] = useCookies();
     const navigate = useNavigate();
     const [form] = Form.useForm();
@@ -38,6 +39,11 @@ const Create = () => {
             })()
         }
     }, [id,form])
+
+    const onCategorySelect = useCallback((category) => {
+        debugger
+        setCategory(category)
+    }, [])
 
     const onFinish = useCallback(async values => {
         setError("")
@@ -118,12 +124,18 @@ const Create = () => {
                     rules={[{ required: true}]}
                     style={{display: "inline-block", width : "calc(25% - 8px)", marginRight: 8}}
                 >
-                    <Select >
-                        <Select.Option value={"dress"}>Dress</Select.Option>
-                        <Select.Option value={"shoes"}>Shoes</Select.Option>
-                        <Select.Option value={"jacket"}>Jacket</Select.Option>
-                        <Select.Option value={"hat"}>Hat</Select.Option>
-                        <Select.Option value={"accessories"}>Accessories</Select.Option>
+                    <Select onSelect={onCategorySelect}>
+                        {Object.keys(fashionStyles).map(categoryName => <Select.Option key={categoryName} value={categoryName}>{categoryName}</Select.Option>)}
+                    </Select>
+                </Form.Item>
+                <Form.Item
+                    label="Style"
+                    name="style"
+                    rules={[{ required: true}]}
+                    style={{display: "inline-block", width : "calc(25% - 8px)", marginRight: 8}}
+                >
+                    <Select disabled={!category}>
+                        {category && fashionStyles[category].map(style => <Select.Option key={style} value={style}>{style}</Select.Option> )}
                     </Select>
                 </Form.Item>
                 <Form.Item
@@ -132,7 +144,7 @@ const Create = () => {
                     rules={[{ required: true}]}
                     style={{display: "inline-block", width : "calc(25% - 8px)", marginRight: 8}}
                 >
-                    <Select >
+                    <Select>
                         <Select.Option value={"red"}>Red</Select.Option>
                         <Select.Option value={"green"}>Green</Select.Option>
                         <Select.Option value={"blue"}>Blue</Select.Option>
@@ -145,16 +157,7 @@ const Create = () => {
                         <Select.Option value={"mix"}>Mix</Select.Option>
                     </Select>
                 </Form.Item>
-                <Form.Item
-                    label="Style"
-                    name="style"
-                    rules={[{ required: true}]}
-                    style={{display: "inline-block", width : "calc(25% - 8px)", marginRight: 8}}
-                >
-                    <Select >
-                        <Select.Option value={"dress"}>A</Select.Option>
-                    </Select>
-                </Form.Item>
+
                 <Form.Item
                     label="Gender"
                     name="gender"

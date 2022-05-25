@@ -1,0 +1,60 @@
+{
+    "Hat" : [
+        "Bower"
+    ],
+    "Dresses": [
+
+    ],
+    "Jacket" : [
+        "Leather",
+        "Long",
+        "Casual",
+        "New",
+        "Winter",
+        "Varsity",
+        "Bomber"
+    ],
+    "Blouses" : [
+        "Saree",
+        "Simple",
+        "Neck",
+        "Back",
+        "Designer",
+        "Casual",
+        "Modern",
+        "Loose",
+        "Lace"
+    ],
+    "Jeans" : [
+        "Regular fit",
+        "Loose fit",
+        "Boyfriend",
+        "Relaxed",
+        "Skinny",
+        "Mom-jeans",
+        "Boot cut",
+        "Wide leg",
+        "Baggy fit",
+        "Jeggings",
+        "Straight cut"
+    ],
+    "Skirts" : [
+
+    ],
+    "Swimsuits" : [
+
+    ],
+    "T-Shirts" : [
+        "Logo",
+        "Print",
+        "Simple",
+        "Sports",
+        "New",
+        "Unique",
+        "Creative",
+        "Collar",
+        "Cool",
+        "Summer",
+        "Modern"
+    ]
+}
