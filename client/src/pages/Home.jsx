@@ -2,7 +2,7 @@ import "./Home.css";
 import React, {useCallback, useEffect, useState}                 from "react";
 import {Row, Col, Card, Rate, Spin}                              from 'antd';
 import {Popconfirm, Empty, Statistic}                            from "antd";
-import {WomanOutlined, ManOutlined, EditOutlined, CloseOutlined} from "@ant-design/icons";
+import {WomanOutlined, ManOutlined, EditOutlined, CloseOutlined, DownloadOutlined} from "@ant-design/icons";
 import {useCookies}                                              from 'react-cookie';
 import {Link}                                                    from 'react-router-dom';
 import SearchControl                                             from '../componets/SearchControl';
@@ -73,14 +73,15 @@ const Home = () => {
                         hoverable
                         style={{ width: 240 }}
                         {...item.image && {cover : <img alt="image" src={`http://localhost:3030/images/${item.image}`} />}}
-                        actions={[
+                        actions={cookies.token ? [
+                            <DownloadOutlined />,
                             <Link to={`/update/${item._id}`}>
                                 <EditOutlined key="edit" />
                             </Link>,
                             <Popconfirm key="remove"  placement="topLeft" title={'Are you sure to delete this item?'} onConfirm={() => onRemove(item)} okText="Yes" cancelText="No">
                                 <CloseOutlined style={{color: "red"}}/>
                             </Popconfirm>
-                        ]}
+                        ] : [<DownloadOutlined />]}
                     >
                         <Card.Meta title={item.name}/>
                         <Rate disabled defaultValue={item.rating} />

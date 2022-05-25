@@ -41,7 +41,6 @@ const Create = () => {
     }, [id,form])
 
     const onCategorySelect = useCallback((category) => {
-        debugger
         setCategory(category)
     }, [])
 

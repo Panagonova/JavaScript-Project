@@ -1,9 +1,24 @@
 {
     "Hat" : [
-        "Bower"
+        "Bower",
+        "Ivy cap",
+        "Fedora",
+        "Boater",
+        "Trilby",
+        "Cowboy",
+        "Top hat",
+        "Porkpie",
+        "Homburg"
     ],
     "Dresses": [
-
+        "Bubble dress",
+        "Baby doll dress",
+        "Wrap around dress",
+        "Culotte dress",
+        "Sundress",
+        "Sheath dress",
+        "Trumpet dress",
+        "Shirt dress"
     ],
     "Jacket" : [
         "Leather",
@@ -39,10 +54,30 @@
         "Straight cut"
     ],
     "Skirts" : [
-
+        "Pencil",
+        "A-line",
+        "Dirndl",
+        "Waist pleat",
+        "Hip pleat",
+        "Bias cut",
+        "Godel",
+        "Tulip",
+        "Trumpet",
+        "Sarong",
+        "Gypsy",
+        "Gore",
+        "Wrap",
+        "Circle"
     ],
     "Swimsuits" : [
-
+        "Tieback",
+        "Classic Back",
+        "Scoopback",
+        "Hi Front",
+        "Halter Neck",
+        "Strapless",
+        "Deep Scoop Back",
+        "T Tieback"
     ],
     "T-Shirts" : [
         "Logo",

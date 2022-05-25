@@ -1,8 +1,9 @@
-import "./LayoutStyle.css"
+import "./LayoutStyle.css";
 import React, {useCallback, useMemo, useState} from "react";
-import {Layout, Menu}                   from "antd";
-import {useNavigate, Link}                  from "react-router-dom";
-import {useCookies}                   from "react-cookie";
+import {Layout, Menu}                          from "antd";
+import {useNavigate, Link}                     from "react-router-dom";
+import {useCookies}                            from "react-cookie";
+import Basket                                  from "./Basket";
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -69,7 +70,7 @@ const DefaultLayout = (props) => {
                 onCollapse={onCollapse}
                 theme={"light"}
             >
-                Sider
+                <Basket/>
             </Sider>
             <Content>
                 {props.children}
