@@ -6,11 +6,13 @@ import {WomanOutlined, ManOutlined, EditOutlined, CloseOutlined, DownloadOutline
 import {useCookies}                                              from 'react-cookie';
 import {Link}                                                    from 'react-router-dom';
 import SearchControl                                             from '../componets/SearchControl';
+import {useEventEmitter}                                         from '../tools/useEventEmitter';
 
 const Home = () => {
     const [products, setProducts] = useState(null);
     const [cookies] = useCookies();
     const [searchSettings, setSearchSettings] = useState({});
+    const {emit} = useEventEmitter()
 
     useEffect(() => {
         (async () => {
@@ -59,6 +61,10 @@ const Home = () => {
             setProducts(old => old.filter(product => product._id !== item._id))
     }, [])
 
+    const addToBasket = useCallback(item => {
+        emit("addToBasket", item)
+    }, [emit])
+
 
     return <>
         <SearchControl searchSettings={searchSettings} onChange={onFilterChange} onClear={resetSearchSettings}/>
@@ -68,20 +74,20 @@ const Home = () => {
         {products && !products.length && <Empty />}
         {products && products.length > 0 && <Row gutter={16} style={{margin: 20}}>
             {products.map(item => {
-                return <Col key={item._id} className="gutter-row" xs={6} sm={6} md={6} lg={6} xl={6}>
+                return <Col key={item._id} className="gutter-row" xs={24} sm={12} md={12} lg={6} xl={4}>
                     <Card
                         hoverable
-                        style={{ width: 240 }}
+                        style={{ width: "100%", marginBottom: 20 }}
                         {...item.image && {cover : <img alt="image" src={`http://localhost:3030/images/${item.image}`} />}}
                         actions={cookies.token ? [
-                            <DownloadOutlined />,
+                            <DownloadOutlined onClick={() => addToBasket(item)}/>,
                             <Link to={`/update/${item._id}`}>
                                 <EditOutlined key="edit" />
                             </Link>,
                             <Popconfirm key="remove"  placement="topLeft" title={'Are you sure to delete this item?'} onConfirm={() => onRemove(item)} okText="Yes" cancelText="No">
                                 <CloseOutlined style={{color: "red"}}/>
                             </Popconfirm>
-                        ] : [<DownloadOutlined />]}
+                        ] : [<DownloadOutlined onClick={() => addToBasket(item)}/>]}
                     >
                         <Card.Meta title={item.name}/>
                         <Rate disabled defaultValue={item.rating} />
