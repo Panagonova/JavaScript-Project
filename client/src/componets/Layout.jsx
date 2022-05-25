@@ -76,7 +76,9 @@ const DefaultLayout = (props) => {
                 {props.children}
             </Content>
         </Layout>
-        <Footer>Footer</Footer>
+        <Footer>
+
+        </Footer>
     </Layout>
 }
 
