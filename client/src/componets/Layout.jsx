@@ -69,6 +69,7 @@ const DefaultLayout = (props) => {
                 collapsed={collapsed}
                 onCollapse={onCollapse}
                 theme={"light"}
+                width={400}
             >
                 <Basket/>
             </Sider>

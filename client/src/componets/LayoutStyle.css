@@ -47,3 +47,15 @@ main {
     width: 50px;
     margin-top: 10px;
 }
+
+aside {
+    max-width: 200px;
+    width: 200px;
+    position: fixed;
+    top: 64px;
+    bottom: 0;
+    left: 0;
+    overflow: hidden auto;
+    min-width: 200px;
+    flex-direction: column !important;
+}

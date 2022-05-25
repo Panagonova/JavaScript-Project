@@ -149,6 +149,7 @@ const Create = () => {
                         <Select.Option value={"blue"}>Blue</Select.Option>
                         <Select.Option value={"yellow"}>Yellow</Select.Option>
                         <Select.Option value={"pink"}>Pink</Select.Option>
+                        <Select.Option value={"purple"}>Purple</Select.Option>
                         <Select.Option value={"brown"}>Brown</Select.Option>
                         <Select.Option value={"grey"}>Grey</Select.Option>
                         <Select.Option value={"black"}>Black</Select.Option>
