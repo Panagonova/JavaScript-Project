@@ -7,6 +7,11 @@ const read = async (query) => {
     delete query.size
     page = Number(page) || 1
     size = Number(size) || 12
+    Object.keys(query).forEach(key => {
+        if (query[key] === "true")
+            query[key] = true
+    })
+
     let result = Product.find((user) => Object.keys(query).every(key => query[key] === user[key]));
     const startIndex = size * ((page || 1) - 1)
     const endIndex = startIndex + size
