@@ -2,8 +2,13 @@ const {nanoid} = require ("nanoid")
 const {Product} =  require("../db");
 
 const read = async (query) => {
+    const {page, size} = query
+    delete query.page
+    delete query.size
     let result = Product.find((user) => Object.keys(query).every(key => query[key] === user[key]));
-    return {data: result || []}
+    const startIndex = size * ((page || 1) - 1)
+    const endIndex = startIndex + size
+    return {count: result.length, data: (result || []).slice(startIndex, endIndex)}
 }
 
 const create = async (productData) => {

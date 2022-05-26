@@ -1,7 +1,7 @@
 import "./Home.css";
 import React, {useCallback, useEffect, useState}                 from "react";
 import {Row, Col, Card, Rate, Spin}                              from 'antd';
-import {Popconfirm, Empty, Statistic}                            from "antd";
+import {Popconfirm, Empty, Statistic, Pagination}                from "antd";
 import {WomanOutlined, ManOutlined, EditOutlined, CloseOutlined, DownloadOutlined} from "@ant-design/icons";
 import {useCookies}                                              from 'react-cookie';
 import {Link}                                                    from 'react-router-dom';
@@ -10,8 +10,9 @@ import {useEventEmitter}                                         from '../tools/
 
 const Home = () => {
     const [products, setProducts] = useState(null);
+    const [count, setCount] = useState(0);
     const [cookies] = useCookies();
-    const [searchSettings, setSearchSettings] = useState({});
+    const [searchSettings, setSearchSettings] = useState({page: 1, size: 12});
     const {emit} = useEventEmitter()
 
     useEffect(() => {
@@ -25,8 +26,10 @@ const Home = () => {
                 }
             })
             const result = await dbData.json();
-            if (!result.error)
+            if (!result.error) {
                 setProducts(result.data)
+                setCount(result.count)
+            }
 
         })()
     }, [cookies, searchSettings])
@@ -36,8 +39,14 @@ const Home = () => {
     }, [searchSettings])
 
     const resetSearchSettings = useCallback(() => {
-        setSearchSettings({})
+        setSearchSettings({page: 1, size: 12})
     }, [searchSettings])
+
+    const onPaginationChange = useCallback((page, size) => {
+        setSearchSettings(Object.assign({}, searchSettings, {page, size}))
+    }, [searchSettings])
+
+
 
     const genderSign = useCallback(gender => {
         if(gender === "Women")
@@ -72,31 +81,51 @@ const Home = () => {
             <Spin  size="large" tip="loading"/>
         </div>}
         {products && !products.length && <Empty />}
-        {products && products.length > 0 && <Row gutter={16} style={{margin: 20}}>
-            {products.map(item => {
-                return <Col key={item._id} className="gutter-row" xs={24} sm={12} md={12} lg={6} xl={4}>
-                    <Card
-                        hoverable
-                        style={{ width: "100%", marginBottom: 20 }}
-                        {...item.image && {cover : <img alt="image" src={`http://localhost:3030/images/${item.image}`} />}}
-                        actions={cookies.token ? [
-                            <DownloadOutlined onClick={() => addToBasket(item)}/>,
-                            <Link to={`/update/${item._id}`}>
-                                <EditOutlined key="edit" />
-                            </Link>,
-                            <Popconfirm key="remove"  placement="topLeft" title={'Are you sure to delete this item?'} onConfirm={() => onRemove(item)} okText="Yes" cancelText="No">
-                                <CloseOutlined style={{color: "red"}}/>
-                            </Popconfirm>
-                        ] : [<DownloadOutlined onClick={() => addToBasket(item)}/>]}
-                    >
-                        <Card.Meta title={item.name}/>
-                        <Rate disabled defaultValue={item.rating} />
-                        <Statistic value={item.price} precision={2} suffix={"лв."} prefix={genderSign(item.gender) }/>
-                    </Card>
-                </Col>
-            })}
-
-        </Row>}
+        {products && products.length > 0 &&
+        <>
+            <div  style={{margin: "10px", textAlign: "center"}}>
+                <Pagination
+                    showSizeChanger
+                    onChange={onPaginationChange}
+                    current={searchSettings.page}
+                    pageSize={searchSettings.size}
+                    total={count}
+                />
+            </div>
+            <Row gutter={16} style={{margin: 20}}>
+                {products.map(item => {
+                    return <Col key={item._id} className="gutter-row" xs={24} sm={12} md={12} lg={6} xl={4}>
+                        <Card
+                            hoverable
+                            style={{ width: "100%", marginBottom: 20 }}
+                            {...item.image && {cover : <img alt="image" src={`http://localhost:3030/images/${item.image}`} />}}
+                            actions={cookies.token ? [
+                                <DownloadOutlined onClick={() => addToBasket(item)}/>,
+                                <Link to={`/update/${item._id}`}>
+                                    <EditOutlined key="edit" />
+                                </Link>,
+                                <Popconfirm key="remove"  placement="topLeft" title={'Are you sure to delete this item?'} onConfirm={() => onRemove(item)} okText="Yes" cancelText="No">
+                                    <CloseOutlined style={{color: "red"}}/>
+                                </Popconfirm>
+                            ] : [<DownloadOutlined onClick={() => addToBasket(item)}/>]}
+                        >
+                            <Card.Meta title={item.name}/>
+                            <Rate disabled defaultValue={item.rating} />
+                            <Statistic value={item.price} precision={2} suffix={"лв."} prefix={genderSign(item.gender) }/>
+                        </Card>
+                    </Col>
+                })}
+            </Row>
+            <div  style={{margin: "10px", textAlign: "center"}}>
+                <Pagination
+                    showSizeChanger
+                    onChange={onPaginationChange}
+                    current={searchSettings.page}
+                    pageSize={searchSettings.size}
+                    total={count}
+                />
+            </div>
+        </>}
     </>
 };
 

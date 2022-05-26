@@ -1,3 +1,4 @@
+const path = require("path");
 const express = require("express");
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -71,6 +72,11 @@ const router = (app) => {
         const result = await productApi.remove(req.query);
         res.send(result);
     })
+
+    app.get("*", (req, res) => {
+        const indexFilePath =path.join(__dirname, 'client/build/index.html');
+        res.sendFile(indexFilePath)
+    });
 }
 
 (async() => {
