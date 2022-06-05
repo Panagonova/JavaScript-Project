@@ -1,12 +1,13 @@
 import "./Home.css";
-import React, {useCallback, useEffect, useState}                 from "react";
-import {Row, Col, Card, Rate, Spin}                              from 'antd';
-import {Popconfirm, Empty, Statistic, Pagination}                from "antd";
-import {WomanOutlined, ManOutlined, EditOutlined, CloseOutlined, DownloadOutlined} from "@ant-design/icons";
-import {useCookies}                                              from 'react-cookie';
-import {Link}                                                    from 'react-router-dom';
-import SearchControl                                             from '../componets/SearchControl';
-import {useEventEmitter}                                         from '../tools/useEventEmitter';
+import React, {useCallback, useEffect, useState}       from "react";
+import {Row, Col, Card, Rate, Spin, Tag, Space}        from 'antd';
+import {Popconfirm, Empty, Statistic, Pagination}      from "antd";
+import {WomanOutlined, ManOutlined, EditOutlined}      from "@ant-design/icons";
+import {CloseOutlined, DownloadOutlined, FireOutlined} from "@ant-design/icons";
+import {useCookies}                                    from 'react-cookie';
+import {Link}                                          from 'react-router-dom';
+import SearchControl                                   from '../componets/SearchControl';
+import {useEventEmitter}                               from '../tools/useEventEmitter';
 
 const Home = () => {
     const [products, setProducts] = useState(null);
@@ -35,12 +36,17 @@ const Home = () => {
     }, [cookies, searchSettings])
 
     const onFilterChange = useCallback(value => {
-        setSearchSettings(Object.assign({}, searchSettings, value))
+        const newValue = Object.assign({}, searchSettings, value)
+        Object.keys(newValue).forEach(key => {
+            if (newValue[key] === false)
+                delete newValue[key]
+        })
+        setSearchSettings(newValue)
     }, [searchSettings])
 
     const resetSearchSettings = useCallback(() => {
         setSearchSettings({page: 1, size: 12})
-    }, [searchSettings])
+    }, [])
 
     const onPaginationChange = useCallback((page, size) => {
         setSearchSettings(Object.assign({}, searchSettings, {page, size}))
@@ -109,6 +115,11 @@ const Home = () => {
                                 </Popconfirm>
                             ] : [<DownloadOutlined onClick={() => addToBasket(item)}/>]}
                         >
+                            <Space>
+                                {item.promotion && <Tag color="green">promotion</Tag>}
+                                {item.hot && <Tag color="#f50" icon={<FireOutlined />}>hot</Tag>}
+                                {item.trending && <Tag color="orange">trending</Tag>}
+                            </Space>
                             <Card.Meta title={item.name}/>
                             <Rate disabled defaultValue={item.rating} />
                             <Statistic value={item.price} precision={2} suffix={"лв."} prefix={genderSign(item.gender) }/>
