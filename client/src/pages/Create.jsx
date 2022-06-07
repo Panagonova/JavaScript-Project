@@ -74,7 +74,8 @@ const Create = () => {
             subTitle="Sorry, you are not authorized to access this page."
             extra={<Button type="primary">Back Home</Button>}
         />}
-        {cookies.token && <Card title={id ? "UpdateProduct" : "Create new product"} style={{margin: "100px auto", width: 800}}>
+        {cookies.token && 
+        <Card title={id ? "Update product" : "Create new product"} style={{margin: "100px auto", width: 800}}>
             <Form
                 name="product"
                 form={form}
